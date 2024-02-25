@@ -1,0 +1,32 @@
+body {
+  /* Sintaxe do gradiente linear para o background do corpo (body) */
+  background: linear-gradient(to bottom, #94e3c9, #f8f8f7);
+
+  /* Estilo adicional para o corpo */
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* 100% da altura da viewport */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo adicional para o conteúdo no corpo
+.content {
+  text-align: center;
+  font-size: 24px;
+} */
+
+
+.estiloFonte{
+  font-family: "Caveat", cursive;
+  font-optical-sizing: auto;
+  font-size: 30px;
+  color: white;
+}
+.estiloFonteMenor{
+  font-family: "Caveat", cursive;
+  font-optical-sizing: auto;
+  font-size: 20px;
+  color: black;
+}
