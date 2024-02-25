@@ -8,6 +8,7 @@
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
       <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+      <link rel="shortcut icon" href="./images/icons8-pet-commands-summon-16.png" />
       <link rel="stylesheet" href="./css/estilo.css">
    </head>
    <body>
@@ -21,7 +22,7 @@
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="servicos" class="form-label estiloFonte">Serviço</label></div>
                         <div class="col-md-6">
                            <select class="form-select estiloFonteMenor" id="servicos">
-                              <option selected>Nossos Serviços</option>
+                              <option selected value="0">Nossos Serviços</option>
                               <option value="1">Banho</option>
                               <option value="2">Tosa</option>
                               <option value="3">Spa Day</option>
@@ -62,7 +63,7 @@
 
                      <div class="row mt-2 text-center">
                         <div class="col md-12">
-                           <?php  ?><label class="estiloFonte" style="color:white; font-size:25px;"> Valor R$ </label> 
+                           <label id="labelValor" class="estiloFonte" style="display:none; color:white; font-size:25px;"> Valor R$ </label> 
                            <!-- mudar preço conforme mudar o radio button e o select -->
                         </div>
 
@@ -79,14 +80,6 @@
          </div>
       </div>
    </div>
-      
-
-
-
-   
-
-
-
 
      
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
