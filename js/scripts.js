@@ -64,5 +64,10 @@ $(document).ready(function(){
             labelValor.style.display = "none"; // Oculta a label
         }
     }
-
+    
+    //funções quando clicar em agendar
+    $('#agendaSv').click(function(){
+        alert('Botão clicado!');
+    });
+    
 });

@@ -1,3 +1,17 @@
+<?php
+// Incluir o arquivo de conexão
+require_once './bd/ConexaoBD.php';
+
+// Criar uma instância da classe de conexão
+$conexaoBD = new ConexaoBD();
+
+// Restante do seu código PHP
+// ...
+
+// Fechar a conexão ao final do script
+$conexaoBD->fecharConexao();
+?>
+
 <!doctype html>
 <html lang="pt-BR">
    <head>
@@ -21,7 +35,7 @@
                      <div class="row mt-5">               
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="servicos" class="form-label estiloFonte">Serviço</label></div>
                         <div class="col-md-6">
-                           <select class="form-select estiloFonteMenor" id="servicos">
+                           <select class="form-select estiloFonteMenor" id="servicos" required>
                               <option selected value="0">Nossos Serviços</option>
                               <option value="1">Banho</option>
                               <option value="2">Tosa</option>
@@ -33,29 +47,29 @@
                      
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="nomeDono" class="form-label estiloFonte">Nome do Dono</label></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="nomeDono" pattern="[A-Za-z]+" id="nomeDono" size="15"></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="nomeDono" pattern="[A-Za-z]+" id="nomeDono" size="15" required></div>
                      </div>
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="nomePet" class="form-label estiloFonte">Nome do Pet</label></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="nomePet" id="nomePet" size="15"></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="nomePet" id="nomePet" size="15" required></div>
                      </div>
                      <div class="row mt-2">
-                        <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="portePet" class="form-label estiloFonte">Porte do Pet</label></div>
+                        <div class="col-md-6 d-flex justify-content-end align-items-center"><label class="form-label estiloFonte">Porte do Pet</label></div>
                         <div class="form-check col-md-2">
-                           <input class="form-check-input" type="radio" name="PortePet" value="peq">
-                           <label class="form-check-label estiloFonte" style="font-size: 20px;" for="flexRadioDefault1">
+                           <input class="form-check-input" type="radio" name="PortePet" value="peq" required>
+                           <label class="form-check-label estiloFonte" style="font-size: 20px;">
                               Pequeno (Até 10kg)
                            </label>
                         </div>
                         <div class="form-check col-md-2">
                            <input class="form-check-input" type="radio" name="PortePet" value="med" >
-                           <label class="form-check-label estiloFonte" style="font-size: 20px;" for="flexRadioDefault2">
+                           <label class="form-check-label estiloFonte" style="font-size: 20px;" >
                               Médio (Até 18kg)
                            </label>
                         </div>
                         <div class="form-check col-md-2">
                            <input class="form-check-input" type="radio" name="PortePet" value="gran" >
-                           <label class="form-check-label estiloFonte" style="font-size: 20px;" for="flexRadioDefault2">
+                           <label class="form-check-label estiloFonte" style="font-size: 20px;">
                               Grande (Mais de 18kg)
                            </label>
                         </div>
@@ -64,14 +78,13 @@
                      <div class="row mt-2 text-center">
                         <div class="col md-12">
                            <label id="labelValor" class="estiloFonte" style="display:none; color:white; font-size:25px;"> Valor R$ </label> 
-                           <!-- mudar preço conforme mudar o radio button e o select -->
                         </div>
 
                      </div>
 
                      <div class="row mt-2 text-center">
                         <div class="col-md-12">
-                           <button type="button" class="btn btn-light" name="agendaSv">Agendar</button>
+                           <button type="button" class="btn btn-light" name="agendaSv" id="agendaSv">Agendar</button>
                         </div>
                      </div>
                </fieldset>
@@ -81,7 +94,7 @@
       </div>
    </div>
 
-     
+     <!--bootstrap, jquery e script js  -->
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
