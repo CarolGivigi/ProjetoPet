@@ -1,15 +1,6 @@
 <?php
-// Incluir o arquivo de conexão
-require_once './bd/ConexaoBD.php';
-
-// Criar uma instância da classe de conexão
-$conexaoBD = new ConexaoBD();
-
-// Restante do seu código PHP
-// ...
-
-// Fechar a conexão ao final do script
-$conexaoBD->fecharConexao();
+   require_once('./bd/ConexaoBD.php');
+   require_once('./bd/querys.php');
 ?>
 
 <!doctype html>
@@ -29,7 +20,7 @@ $conexaoBD->fecharConexao();
    <div class="container-fluid">
       <div class="row d-flex justify-content-center align-items-center" style="height:750px;">
          <div class="col-md-5 rounded " style="height:500px; background-color:#0CA789;">
-            <form >
+            <form method="POST" action="./bd/querys.php">
                <fieldset class="border rounded-3 p-2">
                   <legend class="float-none w-auto px-3 text-center estiloFonte">Seja Bem-Vindo!</legend>
                      <div class="row mt-5">               
@@ -84,7 +75,7 @@ $conexaoBD->fecharConexao();
 
                      <div class="row mt-2 text-center">
                         <div class="col-md-12">
-                           <button type="button" class="btn btn-light" name="agendaSv" id="agendaSv">Agendar</button>
+                           <input type="submit" class="btn btn-light" name="agendaSv" id="agendaSv" value="Agendar">
                         </div>
                      </div>
                </fieldset>
