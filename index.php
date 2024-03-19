@@ -26,7 +26,7 @@
                      <div class="row mt-5">               
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="servicos" class="form-label estiloFonte">Serviço</label></div>
                         <div class="col-md-6">
-                           <select class="form-select estiloFonteMenor" id="servicos" required>
+                           <select class="form-select estiloFonteMenor" id="servicos" name="servicos" required>
                               <option selected value="0">Nossos Serviços</option>
                               <option value="1">Banho</option>
                               <option value="2">Tosa</option>

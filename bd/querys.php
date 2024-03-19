@@ -8,30 +8,25 @@ $conexaoBD = new ConexaoBD();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
    $nomeDono = $_POST['nomeDono'];
    $nomePet = $_POST['nomePet'];
+   $portePet = $_POST['PortePet'];
+   $servico = $_POST['servicos'];
 
    // Inserção no banco de dados
-   $sqlDono = "INSERT INTO tbl_dono (nome) VALUES ('$nomeDono')";
-   $sqlPet = "INSERT INTO tbl_pet (nome) VALUES ('$nomePet')";
-
-   // Executar as consultas SQL
-   $resultadoDono = $conexaoBD->conexao->query($sqlDono);
+   $sqlPet = "INSERT INTO tbl_pet (nome, porte, id_servico) VALUES ('$nomePet','$portePet','$servico')";
+   
+   // Executar a consulta SQL para o pet
    $resultadoPet = $conexaoBD->conexao->query($sqlPet);
+   
+   // Recuperar o último ID inserido na tabela pet
+   $ultimoIdPet = $conexaoBD->conexao->insert_id;
 
-   // Verificar se ocorreu algum erro na inserção do dono
-   // if ($resultadoDono === TRUE) {
-   //     echo "Dono inserido com sucesso!";
-   // } else {
-   //     echo "Erro na inserção do dono: " . $conexaoBD->conexao->error;
-   // }
+   // Inserção no banco de dados para o dono com o id do pet relacionado
+   $sqlDono = "INSERT INTO tbl_dono (nome, id_pet) VALUES ('$nomeDono', '$ultimoIdPet')";
 
-   // // Verificar se ocorreu algum erro na inserção do pet
-   // if ($resultadoPet === TRUE) {
-   //     echo "Pet inserido com sucesso!";
-   // } else {
-   //     echo "Erro na inserção do pet: " . $conexaoBD->conexao->error;
-   // }
-
-   // Fechar a conexão ao final do script
    $conexaoBD->fecharConexao();
+
+   header("Location: ../index.php");
+   exit; // Garantir que o script pare de ser executado após o redirecionamento
 }
+
 ?>
