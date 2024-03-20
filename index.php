@@ -35,7 +35,55 @@
                            </select>
                         </div>
                      </div>
-                     
+
+                     <!-- Modal Banho -->
+                     <div class="modal fade" id="modalBanho" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Banho</h5>
+                                 </div>
+                                 <div class="modal-body">
+                                 <table class="table">
+                                    <thead>
+                                       <tr>
+                                          <th scope="col">#</th>
+                                          <th scope="col">Data</th>
+                                          <th scope="col">Hora</th>
+                                          <th scope="col">Profissional</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                          <th scope="row"><input type="radio" name="linhaAgendamento"></th>
+                                          <td>01/04</td>
+                                          <td>10:00</td>
+                                          <td>Clebão</td>
+                                       </tr>
+                                       <tr>
+                                          <th scope="row"><input type="radio" name="linhaAgendamento"></th>
+                                          <td>02/04</td>
+                                          <td>12:00</td>
+                                          <td>Adriana</td>
+                                       </tr>
+                                       <tr>
+                                          <th scope="row"><input type="radio" name="linhaAgendamento"></th>
+                                          <td>03/04</td>
+                                          <td>14:00</td>
+                                          <td>Mari</td>
+                                       </tr>
+                                    </tbody>
+                                    </table>
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary fechaModal" data-dismiss="modal">Fechar</button>
+                                    <button type="button" class="btn btn-primary salvarModal">Salvar</button>
+                                 </div>
+                           </div>
+                        </div>
+                     </div>
+
+
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="nomeDono" class="form-label estiloFonte">Nome do Dono</label></div>
                         <div class="col-md-6"><input type="text" class="form-control" name="nomeDono" pattern="[A-Za-z]+" id="nomeDono" size="15" required></div>
@@ -47,19 +95,19 @@
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label class="form-label estiloFonte">Porte do Pet</label></div>
                         <div class="form-check col-md-2">
-                           <input class="form-check-input" type="radio" name="PortePet" value="peq" required>
+                           <input class="form-check-input" type="radio" name="PortePet" value="P" required>
                            <label class="form-check-label estiloFonte" style="font-size: 20px;">
                               Pequeno (Até 10kg)
                            </label>
                         </div>
                         <div class="form-check col-md-2">
-                           <input class="form-check-input" type="radio" name="PortePet" value="med" >
+                           <input class="form-check-input" type="radio" name="PortePet" value="M" >
                            <label class="form-check-label estiloFonte" style="font-size: 20px;" >
                               Médio (Até 18kg)
                            </label>
                         </div>
                         <div class="form-check col-md-2">
-                           <input class="form-check-input" type="radio" name="PortePet" value="gran" >
+                           <input class="form-check-input" type="radio" name="PortePet" value="G" >
                            <label class="form-check-label estiloFonte" style="font-size: 20px;">
                               Grande (Mais de 18kg)
                            </label>

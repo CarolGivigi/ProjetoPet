@@ -10,7 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    $nomePet = $_POST['nomePet'];
    $portePet = $_POST['PortePet'];
    $servico = $_POST['servicos'];
+   $data = $_POST['data'];
+   $hora = $_POST['hora'];
+   $prof = $_POST['prof'];
 
+   echo $data . $hora . $prof;
+   
    // Inserção no banco de dados
    $sqlPet = "INSERT INTO tbl_pet (nome, porte, id_servico) VALUES ('$nomePet','$portePet','$servico')";
    
@@ -22,6 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
    // Inserção no banco de dados para o dono com o id do pet relacionado
    $sqlDono = "INSERT INTO tbl_dono (nome, id_pet) VALUES ('$nomeDono', '$ultimoIdPet')";
+
+   
 
    $conexaoBD->fecharConexao();
 
