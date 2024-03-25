@@ -8,7 +8,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>PetShop tatata</title>
+      <title>PetShop </title> <!-- mudar dps -->
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,58 +26,74 @@
                      <div class="row mt-5">               
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="servicos" class="form-label estiloFonte">Serviço</label></div>
                         <div class="col-md-6">
-                           <select class="form-select estiloFonteMenor" id="servicos" name="servicos" required>
-                              <option selected value="0">Nossos Serviços</option>
-                              <option value="1">Banho</option>
-                              <option value="2">Tosa</option>
-                              <option value="3">Spa Day</option>
-                              <option value="4">Hotelzinho</option>  <!-- vai ter que calcular a diaria dps. Abrir calendario com periodo -->
-                           </select>
+                        <select class="form-select estiloFonteMenor" id="servicos" name="servicos" required>
+                           <option selected value="0">Nossos Serviços</option>
+                           <option value="1">Banho</option>
+                           <option value="2">Tosa</option>
+                           <option value="3">Spa Day</option>
+                           <option value="4">Hotelzinho</option>
+                        </select>
                         </div>
                      </div>
 
-                     <!-- Modal Banho -->
-                     <div class="modal fade" id="modalBanho" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <!-- Modal Serviços -->
+                     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                            <div class="modal-content">
                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Banho</h5>
+                                    <h5 class="modal-title" id="tituloModal" class="estiloFonte">Agenda Disponível</h5>
                                  </div>
                                  <div class="modal-body">
                                  <table class="table">
                                     <thead>
                                        <tr>
-                                          <th scope="col">#</th>
+                                          <th scope="col"></th>
                                           <th scope="col">Data</th>
                                           <th scope="col">Hora</th>
-                                          <th scope="col">Profissional</th>
                                        </tr>
                                     </thead>
-                                    <tbody>
-                                       <tr>
-                                          <th scope="row"><input type="radio" name="linhaAgendamento"></th>
-                                          <td>01/04</td>
-                                          <td>10:00</td>
-                                          <td>Clebão</td>
-                                       </tr>
-                                       <tr>
-                                          <th scope="row"><input type="radio" name="linhaAgendamento"></th>
-                                          <td>02/04</td>
-                                          <td>12:00</td>
-                                          <td>Adriana</td>
-                                       </tr>
-                                       <tr>
-                                          <th scope="row"><input type="radio" name="linhaAgendamento"></th>
-                                          <td>03/04</td>
-                                          <td>14:00</td>
-                                          <td>Mari</td>
-                                       </tr>
+                                    <tbody id="tabelaAgendamento">
+                                       <?php
+                                       // Buscar os dias disponíveis
+                                       $diasDisponiveis = buscarDias();
+                                       
+                                       // Verificar se os dias foram recuperados com sucesso
+                                       if ($diasDisponiveis) {
+                                             // Loop através dos dias disponíveis e criar radio buttons para cada dia
+                                             foreach ($diasDisponiveis as $data) {
+                                                echo "<tr>";
+                                                echo "<td><input type=\"radio\" name=\"data\" value=\"$data\"></td>";
+                                                echo "<td>" . date('d/m', strtotime($data)) . "</td>"; 
+                                                
+                                                // Dropdown para selecionar o horário
+                                                echo "<td><select id=\"horario\" name=\"horario\">";
+                                                
+                                                // Buscar os horários disponíveis para este dia
+                                                $horariosDisponiveis = buscarHorarios($data);
+                                                
+                                                // Verificar se os horários foram recuperados com sucesso
+                                                if ($horariosDisponiveis) {
+                                                   // Loop através dos horários e adicionar opções ao dropdown
+                                                   foreach ($horariosDisponiveis as $horario) {
+                                                         echo "<option name='horario' value=\"$horario\">$horario</option>";
+                                                   }
+                                                } else{
+                                                   echo "<tr><td colspan=\"4\">Nenhum horário disponível</td></tr>";
+                                                }
+                                                echo "</select name='horario'></td>";
+                                                
+                                             }
+                                       } else {
+                                             // Se não houver dias disponíveis, exibir uma mensagem
+                                             echo "<tr><td colspan=\"4\">Nenhum dia disponível</td></tr>";
+                                       }
+                                       ?>
                                     </tbody>
-                                    </table>
+                                 </table>
                                  </div>
                                  <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary fechaModal" data-dismiss="modal">Fechar</button>
-                                    <button type="button" class="btn btn-primary salvarModal">Salvar</button>
+                                    <button type="button" class="btn btn-primary salvaModal" >Salvar</button>
                                  </div>
                            </div>
                         </div>
@@ -95,19 +111,19 @@
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label class="form-label estiloFonte">Porte do Pet</label></div>
                         <div class="form-check col-md-2">
-                           <input class="form-check-input" type="radio" name="PortePet" value="P" required>
+                           <input class="form-check-input" type="radio" name="portePet" value="P" required>
                            <label class="form-check-label estiloFonte" style="font-size: 20px;">
                               Pequeno (Até 10kg)
                            </label>
                         </div>
                         <div class="form-check col-md-2">
-                           <input class="form-check-input" type="radio" name="PortePet" value="M" >
+                           <input class="form-check-input" type="radio" name="portePet" value="M" >
                            <label class="form-check-label estiloFonte" style="font-size: 20px;" >
                               Médio (Até 18kg)
                            </label>
                         </div>
                         <div class="form-check col-md-2">
-                           <input class="form-check-input" type="radio" name="PortePet" value="G" >
+                           <input class="form-check-input" type="radio" name="portePet" value="G" >
                            <label class="form-check-label estiloFonte" style="font-size: 20px;">
                               Grande (Mais de 18kg)
                            </label>
@@ -116,7 +132,8 @@
 
                      <div class="row mt-2 text-center">
                         <div class="col md-12">
-                           <label id="labelValor" class="estiloFonte" style="display:none; color:white; font-size:25px;"> Valor R$ </label> 
+                           <label id="labelValor" name="labelValor" class="estiloFonte" style="display:none; color:white; font-size:25px;"> Valor R$ </label> 
+                           <input type="hidden" id="inputValor" name="valor" value="">           
                         </div>
 
                      </div>

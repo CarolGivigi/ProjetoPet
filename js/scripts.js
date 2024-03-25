@@ -1,18 +1,47 @@
 $(document).ready(function(){
-    //pegar valor do serviço selecionado
+
+    //serão usados para atualizar data e hora na modal
+    var dataSelecionada;
+    var horarioSelecionado;
     var servicoSelecionado;
-    $("#servicos").change(function(){
-        servicoSelecionado = $(this).val();
-        mostraValor();
-        //alert(servicoSelecionado);
+    var porteSelecionado;
+
+    //Mostrar modal
+    $('#servicos').on('change', function() {
+        // Obter o valor selecionado do serviço
+        servicoSelecionado = $("#servicos").val();
+        
+        // Verificar se o serviço selecionado é diferente de 0 (Nossos Serviços)
+        if (servicoSelecionado !== "0") {
+            $('#modal').modal('show');
+        }
     });
 
+    //Botão fechar modal
+    $('.fechaModal').click(function() {
+        $(this).closest('.modal').modal('hide'); //fecha a modal pai do botão
+    });
+
+    // Função para atualizar a data e a hora selecionadas
+    function pegaDataHora() {
+        dataSelecionada = $('input[name="dia"]:checked').val();
+        horarioSelecionado = $('#horario').val();
+    }
+
+        //Botão salvar modal
+    $('.salvaModal').click(function() {
+        // Atualizar a data e a hora selecionadas
+        pegaDataHora();
+
+        // Fechar a modal
+        $('#modal').modal('hide');
+    });
+
+
     //pegar valor do porte selecionado
-    var porteSelecionado;
-    $('input[name="PortePet"]').on('change', function() {
+    $('input[name="portePet"]').on('change', function() {
         porteSelecionado = $(this).val();
         mostraValor();
-        // alert(porteSelecionado);
     });
 
     //mostrar valor se select e checkbox estiverem selecionados
@@ -58,76 +87,62 @@ $(document).ready(function(){
                 }
             }
             labelValor.style.display = "block"; // Mostra a label
-        } else if(servicoSelecionado.val == 0 ) {
+        } else if(servicoSelecionado == 0 ) {
             labelValor.textContent = "";
         } else {
             labelValor.style.display = "none"; // Oculta a label
         }
-    }
+    }    
 
-    // Exibir modal nos serviços
-    $('#servicos').change(function() {
-        // Obtém o valor selecionado
-        var servicoSelecionado = $(this).val();
 
-        if (servicoSelecionado !== 0){
-            // Abre a modal correspondente ao serviço selecionado
-            switch(servicoSelecionado) {
-                case '1':
-                    $('#modalBanho').modal('show');
-                    break;
-                // Adicione cases para os outros serviços, se necessário
-                // case '2':
-                //     $('#modalOutroServico').modal('show');
-                //     break;
-                // ...
-            }
-        }
-    });
-
-     //Botão fechar das modais
-     $('.fechaModal').click(function() {
-        $(this).closest('.modal').modal('hide'); //fecha a modal pai do botão
-    });
-
-    document.getElementById('salvarModal').addEventListener('click', function() {
-        // Encontra o radiobutton selecionado
-        var radioButton = document.querySelector('input[name="linhaAgendamento"]:checked');
-
-        // Se algum radiobutton estiver selecionado
-        if (radioButton) {
-            // Obtém a linha correspondente ao radiobutton selecionado
-            var linhaAgendamento = radioButton.closest('tr');
-
-            // Obtém os dados da linha
-            var data = linhaAgendamento.cells[1].innerText;
-            var hora = linhaAgendamento.cells[2].innerText;
-            var prof = linhaAgendamento.cells[2].innerText;
-
-            // Envie os dados para o PHP usando AJAX
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'querys.php');
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    // Resposta do servidor
-                    console.log(xhr.responseText);
-                }
-            };
-            xhr.send('data=' + data + '&hora=' + hora + '&prof=' + prof);
-        } else {
-            // Nenhum radiobutton selecionado
-            alert('Selecione uma linha para salvar.');
-        }
-    });
-
-   
-
-    
-    
-    
     //funções quando clicar em agendar
     $('#agendaSv').click(function(){
-        alert('Botão clicado!');
+        var nomeDono = $('#nomeDono').val();
+        var nomePet = $('#nomePet').val();   
+        var valor = labelValor.textContent;
+
+        // Pegar parte númerica da label
+        var achaNumero = valor.match(/\d+/);
+        valor = achaNumero ? parseInt(achaNumero[0]) : 0;
+
+        $('#inputValor').val(valor); //coloca o valor no campo hidden, pois label n envia por post
+
+        //Atualizar a data e a hora selecionadas uma última vez, caso o usuário tenha feito alguma alteração desde o último clique em "Salvar"
+        pegaDataHora();
+
+        $.ajax({
+            type: 'POST',
+            url: '../bd/querys.php',
+            data: {
+                // Aqui você pode adicionar outros dados do formulário, além da data e da hora selecionadas
+                data: dataSelecionada,
+                hora: horarioSelecionado,
+                servico: servicoSelecionado,
+                portePet: porteSelecionado,
+                nomeDono: nomeDono,
+                nomePet: nomePet,
+                valor: valor,
+            },
+            success: function(response) {
+                // Verifique se a resposta indica sucesso (você pode definir isso no PHP)
+                if (response.success) {
+                    // Se for um sucesso, redirecione o usuário para outra página
+                    window.location.href = "../confirmacao.php";
+                } else {
+                    // Se houver algum problema, exiba uma mensagem de erro ou realize alguma ação adequada
+                    alert("Ocorreu um erro ao processar a solicitação.");
+                }
+            },
+            error: function(xhr, status, error) {
+                // Lidar com erros de requisição AJAX aqui
+                console.error(error);
+            }          
+            
+        });
+        
     });
-});
+
+    $('.voltar').click(function() {
+        window.location.href = "index.php";
+    });
+}); 
