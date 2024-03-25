@@ -1,16 +1,17 @@
 <?php
-// Criar uma instância da classe de conexão
 require_once 'ConexaoBD.php';
 
- // Captura os valores do formulário e insere no banco
- if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = $_POST['data'];
-    $hora = $_POST['horario'];
+    $hora = $_POST['horaSelecionada']; //campo hidden com a hora escolhida
     $nomeDono = $_POST['nomeDono'];
     $nomePet = $_POST['nomePet'];
     $portePet = $_POST['portePet'];
     $servico = $_POST['servicos'];
     $valor = $_POST['valor'];
+
+    //ainda está recebendo $hora com os 15 arrays, mas não utiliza
+    //var_dump($_POST);
 
     //Criar uma instância da conexão com o banco de dados
     $conexaoBD = new ConexaoBD();
@@ -23,20 +24,21 @@ require_once 'ConexaoBD.php';
     //obter o id do pet inserido acima
     $idPetInserido = $conexao->insert_id;
 
+    //INSERIR NA TBL_DONO
     $sqlDono = "INSERT INTO tbl_dono (nome, id_pet) VALUES ('$nomeDono', '$idPetInserido')";
     $resultado = $conexao->query($sqlDono);
 
     //id dono inserido
     $idDonoInserido = $conexao->insert_id;
 
-    //inserção agendamento
+    //inserção do agendamento
     $sqlAgendamento = "INSERT INTO tbl_agendamento (id_dono, id_pet, id_servico, id_prof, hora_agendamento, data_agendamento, valor) 
-                       SELECT '$idDonoInserido', '$idPetInserido', '$servico', fk_prof, '$hora', '$data', '$valor' 
-                       FROM tbl_agenda_disponivel 
-                       WHERE data = '$data' AND hora = '$hora'";
+                        SELECT '$idDonoInserido', '$idPetInserido', '$servico', fk_prof, '$hora', '$data', '$valor' 
+                        FROM tbl_agenda_disponivel 
+                        WHERE data = '$data' AND hora = '$hora'";
 
     $resultado = $conexao->query($sqlAgendamento);
-    
+
     //Verificar se a consulta foi bem-sucedida
     if ($resultado) {
         json_encode(array("success" => true));
@@ -50,67 +52,65 @@ require_once 'ConexaoBD.php';
     $conexaoBD->fecharConexao();
 }
 
-// Função para buscar os horários disponíveis na modal
-    function buscarHorarios() {
-        // Criar uma instância da classe de conexão
-        $conexaoBD = new ConexaoBD();
-        $conexao = $conexaoBD->conexao;
-    
-        // Query SQL para buscar os horários disponíveis
-        $sql = "SELECT DISTINCT hora FROM tbl_agenda_disponivel";
-    
-        // Executar a query
-        $resultado = $conexao->query($sql);
-    
-        // Verificar se a query foi bem-sucedida
-        if ($resultado) {
-            // Inicializar um array para armazenar os horários disponíveis
-            $horarios = array();
-    
-            // Loop através dos resultados e adicionar os horários ao array
-            while ($row = $resultado->fetch_assoc()) {
-                $horarios[] = $row['hora'];
-            }
-    
-            // Retornar os horários disponíveis
-            return $horarios;
-        } else {
-            // Se houver um erro na query, retornar false
-            return false;
+// Função para buscar os horários disponíveis na modal(por enquanto, desativada por conta das panes do POST)
+function buscarHorarios() {
+    // Criar uma instância da classe de conexão
+    $conexaoBD = new ConexaoBD();
+    $conexao = $conexaoBD->conexao;
+
+    // Query SQL para buscar os horários disponíveis
+    $sql = "SELECT DISTINCT hora FROM tbl_agenda_disponivel";
+
+    $resultado = $conexao->query($sql);
+
+    // Verificar se a query foi bem-sucedida
+    if ($resultado) {
+        // Inicializar um array para armazenar os horários disponíveis
+        $horarios = array();
+
+        // Loop através dos resultados e adicionar os horários ao array
+        while ($row = $resultado->fetch_assoc()) {
+            $horarios[] = $row['hora'];
         }
-        $conexaoBD->fecharConexao();
+
+        // Retornar os horários disponíveis
+        return $horarios;
+    } else {
+        // Se houver um erro na query, retornar false
+        return false;
     }
- 
- // Função para buscar os dias disponíveis na modal
-    function buscarDias() {
-        // Criar uma instância da classe de conexão
-        $conexaoBD = new ConexaoBD();
-        $conexao = $conexaoBD->conexao;
-    
-        // Query SQL para buscar os dias disponíveis
-        $sql = "SELECT DISTINCT data FROM tbl_agenda_disponivel";
-    
-        // Executar a query
-        $resultado = $conexao->query($sql);
-    
-        // Verificar se a query foi bem-sucedida
-        if ($resultado) {
-            // Inicializar um array para armazenar os dias disponíveis
-            $diasDisponiveis = array();
-    
-            // Loop através dos resultados e adicionar os dias ao array
-            while ($row = $resultado->fetch_assoc()) {
-                $diasDisponiveis[] = $row['data'];
-            }
-    
-            // Retornar os dias disponíveis
-            return $diasDisponiveis;
-        } else {
-            // Se houver um erro na query, retornar false
-            return false;
+    $conexaoBD->fecharConexao();
+}
+
+// Função para buscar os dias disponíveis na modal
+function buscarDias() {
+    $conexaoBD = new ConexaoBD();
+    $conexao = $conexaoBD->conexao;
+
+    // Query SQL para buscar os dias disponíveis
+    $sql = "SELECT DISTINCT data FROM tbl_agenda_disponivel";
+
+    // Executar a query
+    $resultado = $conexao->query($sql);
+
+    // Verificar se a query foi bem-sucedida
+    if ($resultado) {
+        // Inicializar um array para armazenar os dias disponíveis
+        $diasDisponiveis = array();
+
+        // Loop através dos resultados e adicionar os dias ao array
+        while ($row = $resultado->fetch_assoc()) {
+            $diasDisponiveis[] = $row['data'];
         }
-        $conexaoBD->fecharConexao();
+
+        // Retornar os dias disponíveis
+        return $diasDisponiveis;
+    } else {
+        // Se houver um erro na query, retornar false
+        return false;
     }
+    $conexaoBD->fecharConexao();
+}
 
 
 ?>

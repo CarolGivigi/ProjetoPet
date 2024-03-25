@@ -1,8 +1,6 @@
 <?php
-// Conectar ao banco de dados
 require_once './ConexaoBD.php';
 
-// Criar uma instância da classe de conexão
 $conexaoBD = new ConexaoBD();
 $conexao = $conexaoBD->conexao;
 

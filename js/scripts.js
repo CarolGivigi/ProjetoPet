@@ -1,10 +1,21 @@
 $(document).ready(function(){
-
     //serão usados para atualizar data e hora na modal
     var dataSelecionada;
     var horarioSelecionado;
     var servicoSelecionado;
     var porteSelecionado;
+
+    // Função para obter a data e a hora selecionadas
+    function pegaDataHora() {
+        dataSelecionada = $('input[name="data"]:checked').val();
+        horarioSelecionado = $(this).find('option:selected').prop('title'); 
+        //alert(horarioSelecionado);
+    }
+    
+    // Chamar a função quando o valor do select for alterado
+    $('.hora').change(function() {
+        pegaDataHora.call(this); // Chamar a função pegaDataHora com o contexto do elemento alterado
+    });
 
     //Mostrar modal
     $('#servicos').on('change', function() {
@@ -22,17 +33,8 @@ $(document).ready(function(){
         $(this).closest('.modal').modal('hide'); //fecha a modal pai do botão
     });
 
-    // Função para atualizar a data e a hora selecionadas
-    function pegaDataHora() {
-        dataSelecionada = $('input[name="dia"]:checked').val();
-        horarioSelecionado = $('#horario').val();
-    }
-
-        //Botão salvar modal
+    //Botão salvar modal
     $('.salvaModal').click(function() {
-        // Atualizar a data e a hora selecionadas
-        pegaDataHora();
-
         // Fechar a modal
         $('#modal').modal('hide');
     });
@@ -94,52 +96,82 @@ $(document).ready(function(){
         }
     }    
 
+    //funções quando clicar em agendar(ajax estava dando pane no envio da hora)
+    // $('#agendaSv').click(function(){
+    //     var nomeDono = $('#nomeDono').val();
+    //     var nomePet = $('#nomePet').val();
 
-    //funções quando clicar em agendar
-    $('#agendaSv').click(function(){
-        var nomeDono = $('#nomeDono').val();
-        var nomePet = $('#nomePet').val();   
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: '../bd/querys.php',
+    //         data: {
+    //             data: dataSelecionada,
+    //             hora: horarioSelecionado,
+    //             servico: servicoSelecionado,
+    //             portePet: porteSelecionado,
+    //             nomeDono: nomeDono,
+    //             nomePet: nomePet,
+    //             valor: valor,
+    //         },
+    //         success: function(response) {
+    //             if (response.success) {
+    //                 alert('foi')
+    //                 window.location.href = "../confirmacao.php";
+    //             } else {
+    //                 alert(data);
+    //                 // alert("Ocorreu um erro ao processar a solicitação.");
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error(error);
+    //         }          
+    //     });
+
+    //     // COM SERIALIZE
+    //     // var dados = $('#formAgendamento').serialize()
+
+    //     // alert(dados);
+    //     // console.log(dados);
+
+    //     // $.ajax({
+    //     //     type: 'POST',
+    //     //     dataType: 'json',
+    //     //     url: '../bd/querys.php',
+    //     //     async: true,
+    //     //     data: dados,
+    //     //     success: function(response) {
+    //     //         if (response.success) {
+    //     //             alert(data)
+    //     //              // window.location.href = "../confirmacao.php";
+    //     //         }
+    //     //     }   
+    //     // });
+    // });
+        
+    $('#formAgendamento').submit(function(e) {
+        e.preventDefault(); // Impede o envio do formulário padrão
+
+        //Atualizar a data e a hora selecionadas uma última vez, caso o usuário tenha feito alguma alteração desde o último "Salvar"
+        pegaDataHora();
+
+        //pegar parte numérica da label valor
         var valor = labelValor.textContent;
-
-        // Pegar parte númerica da label
         var achaNumero = valor.match(/\d+/);
         valor = achaNumero ? parseInt(achaNumero[0]) : 0;
 
         $('#inputValor').val(valor); //coloca o valor no campo hidden, pois label n envia por post
 
-        //Atualizar a data e a hora selecionadas uma última vez, caso o usuário tenha feito alguma alteração desde o último clique em "Salvar"
-        pegaDataHora();
-
-        $.ajax({
-            type: 'POST',
-            url: '../bd/querys.php',
-            data: {
-                // Aqui você pode adicionar outros dados do formulário, além da data e da hora selecionadas
-                data: dataSelecionada,
-                hora: horarioSelecionado,
-                servico: servicoSelecionado,
-                portePet: porteSelecionado,
-                nomeDono: nomeDono,
-                nomePet: nomePet,
-                valor: valor,
-            },
-            success: function(response) {
-                // Verifique se a resposta indica sucesso (você pode definir isso no PHP)
-                if (response.success) {
-                    // Se for um sucesso, redirecione o usuário para outra página
-                    window.location.href = "../confirmacao.php";
-                } else {
-                    // Se houver algum problema, exiba uma mensagem de erro ou realize alguma ação adequada
-                    alert("Ocorreu um erro ao processar a solicitação.");
-                }
-            },
-            error: function(xhr, status, error) {
-                // Lidar com erros de requisição AJAX aqui
-                console.error(error);
-            }          
-            
+        var horaSelecionada = '';
+        $('select[name="hora[]"]').each(function() {
+            var hora = $(this).val();
+            if (hora !== '') {
+                horaSelecionada = hora;
+                return false; // Sai do loop quando encontrar a primeira hora não vazia
+            }
         });
         
+        $('#horaSelecionada').val(horaSelecionada); // Atribui a hora selecionada ao campo oculto
+        this.submit(); // Envia o formulário
     });
 
     $('.voltar').click(function() {
