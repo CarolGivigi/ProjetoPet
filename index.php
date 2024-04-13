@@ -19,11 +19,11 @@
    <body>
    <div class="container-fluid">
       <div class="row d-flex justify-content-center align-items-center" style="height:750px;">
-         <div class="col-md-5 rounded " style="height:500px; background-color:#0CA789;">
+         <div class="col-md-5 rounded " style="height:540px; background-color:#0CA789;">
             <form method="POST" action="./bd/querys.php" id="formAgendamento">
-               <fieldset class="border rounded-3 p-2">
+               <fieldset class="border rounded-3 p-3 ">
                   <legend class="float-none w-auto px-3 text-center estiloFonte">Seja Bem-Vindo!</legend>
-                     <div class="row mt-5">               
+                     <div class="row mt-3">               
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="servicos" class="form-label estiloFonte">Serviço</label></div>
                         <div class="col-md-6">
                         <select class="form-select estiloFonteMenor" id="servicos" name="servicos" required>
@@ -44,48 +44,46 @@
                                     <h5 class="modal-title" id="tituloModal" class="estiloFonte">Agenda Disponível</h5>
                                  </div>
                                  <div class="modal-body">
-                                 <table class="table">
-                                    <thead>
-                                       <tr>
-                                          <th scope="col"></th>
-                                          <th scope="col">Data</th>
-                                          <th scope="col">Hora</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody id="tabelaAgendamento">
-                                      <?php
-                                          // Buscar os dias disponíveis
-                                          $diasDisponiveis = buscarDias();
+                                    <table class="table">
+                                       <thead>
+                                          <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col">Data</th>
+                                                <th scope="col">Hora</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody id="tabelaAgendamento">
+                                          <?php
+                                          // Buscar os dias e horários disponíveis
+                                          $diasEHorariosDisponiveis = buscarDias();
 
-                                          // Verificar se os dias foram recuperados com sucesso
-                                          if ($diasDisponiveis) {
-                                             // Loop através dos dias disponíveis e criar radio buttons para cada dia
-                                             foreach ($diasDisponiveis as $data) {
-                                                echo "<tr>";
-                                                echo "<td><input type=\"radio\" name=\"data\" value=\"$data\"></td>";
-                                                echo "<td>" . date('d/m', strtotime($data)) . "</td>"; 
-                                                
-                                                // Dropdown para selecionar o horário
-                                                echo "<td><select class=\"hora\" name=\"hora[]\">";
-                                                echo "<option selected value=''>Selecione</option>";
-                                                
-                                                // Buscar os horários disponíveis para este dia(estático por enquanto, pane do ajax)
-                                                echo "<option value='10:00:00' title='10:00:00'>10:00:00</option>";
-                                                echo "<option value='12:00:00' title='12:00:00'>12:00:00</option>";
-                                                echo "<option value='14:00:00' title='14:00:00'>14:00:00</option>";
-                                                echo "<option value='16:00:00' title='16:00:00'>16:00:00</option>";
-                                                echo "<option value='18:00:00' title='18:00:00'>18:00:00</option>";
-                                                echo "</select></td>";
-                                             }
+                                          // Verificar se os dias e horários foram recuperados com sucesso
+                                          if ($diasEHorariosDisponiveis) {
+                                                // Loop através dos dias e horários disponíveis
+                                                foreach ($diasEHorariosDisponiveis as $data => $horarios) {
+                                                   echo "<tr>";
+                                                   echo "<td><input type=\"radio\" name=\"data\" value=\"$data\"></td>";
+                                                   echo "<td>" . date('d/m', strtotime($data)) . "</td>";
+                                                   echo "<td><select class=\"hora\" name=\"hora[]\">";
+                                                   echo "<option selected value=''>Selecione</option>";
+
+                                                   // Loop através dos horários disponíveis para este dia
+                                                   foreach ($horarios as $horario) {
+                                                      echo "<option value='$horario' title='$horario'>$horario</option>";
+                                                   }
+
+                                                   echo "</select></td>";
+                                                   echo "</tr>";
+                                                }
                                           } else {
-                                             // Se não houver dias disponíveis, exibir uma mensagem
-                                             echo "<tr><td colspan=\"3\">Nenhum dia disponível</td></tr>";
+                                                // Se não houver dias e horários disponíveis, exibir uma mensagem
+                                                echo "<tr><td colspan=\"3\">Nenhum dia disponível</td></tr>";
                                           }
                                           ?>
+                                       </tbody>
+                                       <input type="hidden" id="horaSelecionada" name="horaSelecionada" value="">
+                                    </table>
 
-                                    </tbody>
-                                    <input type="hidden" id="horaSelecionada" name="horaSelecionada" value="">
-                                 </table>
                                  </div>
                                  <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary fechaModal" data-dismiss="modal">Fechar</button>
@@ -98,6 +96,10 @@
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="nomeDono" class="form-label estiloFonte">Nome do Dono</label></div>
                         <div class="col-md-6"><input type="text" class="form-control" name="nomeDono" pattern="[A-Za-z]+" id="nomeDono" size="15" required></div>
+                     </div>
+                     <div class="row mt-2">
+                        <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="email" class="form-label estiloFonte">E-mail</label></div>
+                        <div class="col-md-6"><input type="email" class="form-control" name="email" id="email" size="35" required></div>
                      </div>
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="nomePet" class="form-label estiloFonte">Nome do Pet</label></div>
@@ -138,6 +140,7 @@
                            <input type="submit" class="btn btn-light" name="agendaSv" id="agendaSv" value="Agendar">
                         </div>
                      </div>
+
                </fieldset>
             </form>
 
