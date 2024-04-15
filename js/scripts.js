@@ -9,36 +9,40 @@ $(document).ready(function(){
     function pegaDataHora() {
         dataSelecionada = $('input[name="data"]:checked').val();
         horarioSelecionado = $(this).find('option:selected').prop('title'); 
-        //alert(horarioSelecionado);
     }
     
     // Chamar a função quando o valor do select for alterado
     $('.hora').change(function() {
-        pegaDataHora.call(this); // Chamar a função pegaDataHora com o contexto do elemento alterado
+        pegaDataHora.call(this); 
     });
 
-    //Mostrar modal
+    // Mostrar modal
     $('#servicos').on('change', function() {
+        // Ocultar todas as modais
+        $('.modal').modal('hide');
+
         // Obter o valor selecionado do serviço
-        servicoSelecionado = $("#servicos").val();
+        var servicoSelecionado = $("#servicos").val();
         
         // Verificar se o serviço selecionado é diferente de 0 (Nossos Serviços)
         if (servicoSelecionado !== "0") {
-            $('#modal').modal('show');
+            if (servicoSelecionado == "4") {
+                $('#modalHotel').modal('show');
+            } else {
+                $('#modalServicos').modal('show');
+            }
         }
     });
 
-    //Botão fechar modal
-    $('.fechaModal').click(function() {
-        $(this).closest('.modal').modal('hide'); //fecha a modal pai do botão
+    $('.dataHotel').change(function() {
+        var dataHotel = $(this).find('option:selected').attr('data-vagas');
+        $('#labelVagas').text(dataHotel);
     });
-
-    //Botão salvar modal
+    
+    //Botão 'salvar' modal
     $('.salvaModal').click(function() {
-        // Fechar a modal
-        $('#modal').modal('hide');
+        $('.modal').modal('hide');
     });
-
 
     //pegar valor do porte selecionado
     $('input[name="portePet"]').on('change', function() {
@@ -96,58 +100,7 @@ $(document).ready(function(){
         }
     }    
 
-    //funções quando clicar em agendar(ajax estava dando pane no envio da hora)
-    // $('#agendaSv').click(function(){
-    //     var nomeDono = $('#nomeDono').val();
-    //     var nomePet = $('#nomePet').val();
-
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '../bd/querys.php',
-    //         data: {
-    //             data: dataSelecionada,
-    //             hora: horarioSelecionado,
-    //             servico: servicoSelecionado,
-    //             portePet: porteSelecionado,
-    //             nomeDono: nomeDono,
-    //             nomePet: nomePet,
-    //             valor: valor,
-    //         },
-    //         success: function(response) {
-    //             if (response.success) {
-    //                 alert('foi')
-    //                 window.location.href = "../confirmacao.php";
-    //             } else {
-    //                 alert(data);
-    //                 // alert("Ocorreu um erro ao processar a solicitação.");
-    //             }
-    //         },
-    //         error: function(xhr, status, error) {
-    //             console.error(error);
-    //         }          
-    //     });
-
-    //     // COM SERIALIZE
-    //     // var dados = $('#formAgendamento').serialize()
-
-    //     // alert(dados);
-    //     // console.log(dados);
-
-    //     // $.ajax({
-    //     //     type: 'POST',
-    //     //     dataType: 'json',
-    //     //     url: '../bd/querys.php',
-    //     //     async: true,
-    //     //     data: dados,
-    //     //     success: function(response) {
-    //     //         if (response.success) {
-    //     //             alert(data)
-    //     //              // window.location.href = "../confirmacao.php";
-    //     //         }
-    //     //     }   
-    //     // });
-    // });
-        
+    //Enviar dados
     $('#formAgendamento').submit(function(e) {
         e.preventDefault(); // Impede o envio do formulário padrão
 
@@ -174,6 +127,7 @@ $(document).ready(function(){
         this.submit(); // Envia o formulário
     });
 
+    //voltar do confirmação
     $('.voltar').click(function() {
         window.location.href = "index.php";
     });

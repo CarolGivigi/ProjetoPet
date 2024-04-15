@@ -37,7 +37,7 @@
                      </div>
 
                      <!-- Modal Serviços -->
-                     <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal fade" id="modalServicos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                            <div class="modal-content">
                                  <div class="modal-header">
@@ -47,33 +47,31 @@
                                     <table class="table">
                                        <thead>
                                           <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col">Data</th>
-                                                <th scope="col">Hora</th>
+                                             <th scope="col"></th>
+                                             <th scope="col">Data</th>
+                                             <th scope="col">Hora</th>
                                           </tr>
                                        </thead>
                                        <tbody id="tabelaAgendamento">
                                           <?php
-                                          // Buscar os dias e horários disponíveis
                                           $diasEHorariosDisponiveis = buscarDias();
 
-                                          // Verificar se os dias e horários foram recuperados com sucesso
                                           if ($diasEHorariosDisponiveis) {
-                                                // Loop através dos dias e horários disponíveis
                                                 foreach ($diasEHorariosDisponiveis as $data => $horarios) {
-                                                   echo "<tr>";
-                                                   echo "<td><input type=\"radio\" name=\"data\" value=\"$data\"></td>";
-                                                   echo "<td>" . date('d/m', strtotime($data)) . "</td>";
-                                                   echo "<td><select class=\"hora\" name=\"hora[]\">";
-                                                   echo "<option selected value=''>Selecione</option>";
+                                                   if (!empty($horarios)){
+                                                      echo "<tr>";
+                                                      echo "<td><input type=\"radio\" name=\"data\" value=\"$data\"></td>";
+                                                      echo "<td>" . date('d/m', strtotime($data)) . "</td>";
+                                                      echo "<td><select class=\"hora\" name=\"hora[]\">";
+                                                      echo "<option selected value=''>Selecione</option>";
 
-                                                   // Loop através dos horários disponíveis para este dia
-                                                   foreach ($horarios as $horario) {
-                                                      echo "<option value='$horario' title='$horario'>$horario</option>";
+                                                      // Loop através dos horários disponíveis para este dia
+                                                      foreach ($horarios as $horario) {
+                                                         echo "<option value='$horario' title='$horario'>$horario</option>";
+                                                      }
+                                                      echo "</select></td>";
+                                                      echo "</tr>";
                                                    }
-
-                                                   echo "</select></td>";
-                                                   echo "</tr>";
                                                 }
                                           } else {
                                                 // Se não houver dias e horários disponíveis, exibir uma mensagem
@@ -83,16 +81,62 @@
                                        </tbody>
                                        <input type="hidden" id="horaSelecionada" name="horaSelecionada" value="">
                                     </table>
-
-                                 </div>
+                                 </div>                           
                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary fechaModal" data-dismiss="modal">Fechar</button>
                                     <button type="button" class="btn btn-primary salvaModal" >Salvar</button>
                                  </div>
                            </div>
                         </div>
                      </div>
 
+                     <!-- Modal Hotel -->
+                     <div class="modal fade" id="modalHotel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="tituloModal" class="estiloFonte">Agenda Disponível</h5>
+                                 </div>
+                                 <div class="modal-body">
+                                    <table class="table">
+                                       <thead>
+                                          <tr>
+                                             <th scope="col">Check-in</th>
+                                             <th scope="col">Diárias</th>
+                                             <th scope="col">Vagas</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody id="tabelaAgendamentoHotel">
+                                       <?php
+                                          $diasVagasDisponiveis = buscarDiasHotel();
+
+                                          if ($diasVagasDisponiveis) {
+                                             echo '<tr>';
+                                             echo '<td><select class="dataHotel" name="data">';
+                                             echo '<option selected disabled>Selecione a data</option>';
+                                             
+                                             foreach ($diasVagasDisponiveis as $data => $numeroVagas) {
+                                                echo '<option value="' . $data . '" data-vagas="' . $numeroVagas . '">' . date('d/m', strtotime($data)) . '</option>';
+                                             }
+                                             
+                                             echo '</select></td>';
+                                             echo '<td><input type="number" id="numDiarias" name="numDiarias" min="1" max="30" placeholder="Número de diárias"></td>';
+                                             echo '<td colspan="2" class="col-md-1"><label id="labelVagas"></label></td>';
+                                             echo '</tr>';
+                                          } else {
+                                             echo '<tr><td colspan="2">Nenhum dia disponível</td></tr>';
+                                          }
+                                       ?>
+                                       <tr class="row"><td>Temos uma equipe 24h com seu pet no Hotelzinho!</td></tr>
+                                       </tbody>
+                                    </table>
+                                 </div>                           
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary salvaModal" >Salvar</button>
+                                 </div>
+                           </div>
+                        </div>
+                     </div>
+                     
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="nomeDono" class="form-label estiloFonte">Nome do Dono</label></div>
                         <div class="col-md-6"><input type="text" class="form-control" name="nomeDono" pattern="[A-Za-z]+" id="nomeDono" size="15" required></div>

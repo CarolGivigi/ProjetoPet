@@ -1,5 +1,6 @@
 <?php
 require_once 'ConexaoBD.php';
+//require_once 'enviaEmail.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = $_POST['data'];
@@ -11,11 +12,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $servico = $_POST['servicos'];
     $valor = $_POST['valor'];
 
-    // Criar uma instância da conexão com o banco de dados
     $conexaoBD = new ConexaoBD();
     $conexao = $conexaoBD->conexao;
 
-    // Iniciar uma transação para garantir a consistência dos dados
     $conexao->begin_transaction();
 
     try {
@@ -62,6 +61,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verificar se a consulta foi bem-sucedida
         json_encode(array("success" => true));
+
+        // Parâmetros para o e-mail
+        // $assunto = "Confirmação de Agendamento";
+        // $mensagem = "Funcionou ein";
+        // $mensagem = "Olá $nomeDono,<br><br>O seu agendamento foi confirmado com sucesso para o dia $data às $hora.<br><br>Atenciosamente,<br> Pet Shop da Carol.";
+
+        // Enviar e-mail
+        //enviarEmail($email, $assunto, $mensagem); 
+
         echo '<script>window.location.href = "../confirmacao.php";</script>';
         exit;
     } catch (Exception $e) {
@@ -73,107 +81,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conexaoBD->fecharConexao();
 }
 
-
-// Função para buscar os horários disponíveis na modal(por enquanto, desativada por conta das panes do POST)
-// function buscarHorarios() {
-//     // Criar uma instância da classe de conexão
-//     $conexaoBD = new ConexaoBD();
-//     $conexao = $conexaoBD->conexao;
-
-//     // Query SQL para buscar os horários disponíveis
-//     $sql = "SELECT DISTINCT hora FROM tbl_agenda_disponivel";
-
-//     $resultado = $conexao->query($sql);
-
-//     // Verificar se a query foi bem-sucedida
-//     if ($resultado) {
-//         // Inicializar um array para armazenar os horários disponíveis
-//         $horarios = array();
-
-//         // Loop através dos resultados e adicionar os horários ao array
-//         while ($row = $resultado->fetch_assoc()) {
-//             $horarios[] = $row['hora'];
-//         }
-
-//         // Retornar os horários disponíveis
-//         return $horarios;
-//     } else {
-//         // Se houver um erro na query, retornar false
-//         return false;
-//     }
-//     $conexaoBD->fecharConexao();
-// }
-
 // Função para buscar os dias disponíveis na modal
 function buscarDias() {
     $conexaoBD = new ConexaoBD();
     $conexao = $conexaoBD->conexao;
 
-    // Query SQL para buscar os dias e os horários disponíveis
     $sql = "SELECT DISTINCT data, hora FROM tbl_agenda_disponivel";
-
-    // Executar a query
     $resultado = $conexao->query($sql);
 
-    // Verificar se a query foi bem-sucedida
     if ($resultado) {
-        // Inicializar um array para armazenar os dias disponíveis e os horários correspondentes
         $diasEHorariosDisponiveis = array();
 
-        // Loop através dos resultados
         while ($row = $resultado->fetch_assoc()) {
             $data = $row['data'];
             $hora = $row['hora'];
 
-            // Adicionar a data como chave do array, e os horários disponíveis como valores correspondentes
             if (!isset($diasEHorariosDisponiveis[$data])) {
                 $diasEHorariosDisponiveis[$data] = array();
             }
             $diasEHorariosDisponiveis[$data][] = $hora;
         }
 
-        // Fechar a conexão antes de retornar os dias e horários disponíveis
         $conexaoBD->fecharConexao();
 
-        // Retornar os dias e horários disponíveis
         return $diasEHorariosDisponiveis;
     } else {
-        // Se houver um erro na query, retornar false
         $conexaoBD->fecharConexao();
         return false;
     }
 }
 
-// function buscarDias() {
-//     $conexaoBD = new ConexaoBD();
-//     $conexao = $conexaoBD->conexao;
+function buscarDiasHotel() {
+    $conexaoBD = new ConexaoBD();
+    $conexao = $conexaoBD->conexao;
 
-//     // Query SQL para buscar os dias disponíveis
-//     $sql = "SELECT DISTINCT data FROM tbl_agenda_disponivel";
+    $sql = "SELECT data, vagas FROM tbl_agenda_disponivel_hotel";
+    $resultado = $conexao->query($sql);
 
-//     // Executar a query
-//     $resultado = $conexao->query($sql);
+    if ($resultado) {
+        $datasVagasDisponiveis = array();
 
-//     // Verificar se a query foi bem-sucedida
-//     if ($resultado) {
-//         // Inicializar um array para armazenar os dias disponíveis
-//         $diasDisponiveis = array();
+        while ($row = $resultado->fetch_assoc()) {
+            $data = $row['data'];
+            $numeroVagas = $row['vagas'];
+            $datasVagasDisponiveis[$data] = $numeroVagas;
+        }
 
-//         // Loop através dos resultados e adicionar os dias ao array
-//         while ($row = $resultado->fetch_assoc()) {
-//             $diasDisponiveis[] = $row['data'];
-//         }
+        $conexaoBD->fecharConexao();
 
-//         // Fechar a conexão antes de retornar os dias disponíveis
-//         $conexaoBD->fecharConexao();
+        return $datasVagasDisponiveis;
+    } else {
+        $conexaoBD->fecharConexao();
+        return false;
+    }
+}
 
-//         // Retornar os dias disponíveis
-//         return $diasDisponiveis;
-//     } else {
-//         // Se houver um erro na query, retornar false
-//         $conexaoBD->fecharConexao();
-//         return false;
-//     }
-// }
 
 ?>
