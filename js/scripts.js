@@ -22,7 +22,7 @@ $(document).ready(function(){
         $('.modal').modal('hide');
 
         // Obter o valor selecionado do serviço
-        var servicoSelecionado = $("#servicos").val();
+        servicoSelecionado = $("#servicos").val();
         
         // Verificar se o serviço selecionado é diferente de 0 (Nossos Serviços)
         if (servicoSelecionado !== "0") {
@@ -36,18 +36,26 @@ $(document).ready(function(){
 
     $('.dataHotel').change(function() {
         var dataHotel = $(this).find('option:selected').attr('data-vagas');
-        $('#labelVagas').text(dataHotel);
+        $('#labelVagas').text(dataHotel).css('font-weight', 'bold');
+    
+        // Converte o valor para um número inteiro
+        var numDiarias = parseInt(dataHotel);
+    
+        if (numDiarias >= 5) {
+            $('#labelVagas').css('color', 'green'); 
+        } else if (numDiarias == 4) {
+            $('#labelVagas').css('color', 'green'); 
+        } else if (numDiarias == 3) {
+            $('#labelVagas').css('color', 'orange'); 
+        } else if (numDiarias == 2 || numDiarias == 1) {
+            $('#labelVagas').css('color', 'red'); 
+        }
     });
+    
     
     //Botão 'salvar' modal
     $('.salvaModal').click(function() {
         $('.modal').modal('hide');
-    });
-
-    //pegar valor do porte selecionado
-    $('input[name="portePet"]').on('change', function() {
-        porteSelecionado = $(this).val();
-        mostraValor();
     });
 
     //mostrar valor se select e checkbox estiverem selecionados
@@ -84,12 +92,13 @@ $(document).ready(function(){
                 }
             //serviço: hotelzinho
             } else if(servicoSelecionado == 4){
-                if(porteSelecionado == "P"){
-                    labelValor.textContent += 100;
-                } else if(porteSelecionado == "M"){
-                    labelValor.textContent += 140;
-                } else if(porteSelecionado == "G"){
-                    labelValor.textContent += 180;
+                var numDiarias = document.getElementById('numDiarias').value;
+                if (porteSelecionado == "P") {
+                    labelValor.textContent += 100 * numDiarias;
+                } else if (porteSelecionado == "M") {
+                    labelValor.textContent += 140 * numDiarias;
+                } else if (porteSelecionado == "G") {
+                    labelValor.textContent += 180 * numDiarias;
                 }
             }
             labelValor.style.display = "block"; // Mostra a label
@@ -99,6 +108,12 @@ $(document).ready(function(){
             labelValor.style.display = "none"; // Oculta a label
         }
     }    
+
+     //pegar valor do porte selecionado
+    $('input[name="portePet"]').on('change', function() {
+        porteSelecionado = $(this).val();
+        mostraValor();
+    });
 
     //Enviar dados
     $('#formAgendamento').submit(function(e) {

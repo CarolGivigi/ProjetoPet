@@ -54,29 +54,29 @@
                                        </thead>
                                        <tbody id="tabelaAgendamento">
                                           <?php
-                                          $diasEHorariosDisponiveis = buscarDias();
+                                             $diasEHorariosDisponiveis = buscarDias();
 
-                                          if ($diasEHorariosDisponiveis) {
-                                                foreach ($diasEHorariosDisponiveis as $data => $horarios) {
-                                                   if (!empty($horarios)){
-                                                      echo "<tr>";
-                                                      echo "<td><input type=\"radio\" name=\"data\" value=\"$data\"></td>";
-                                                      echo "<td>" . date('d/m', strtotime($data)) . "</td>";
-                                                      echo "<td><select class=\"hora\" name=\"hora[]\">";
-                                                      echo "<option selected value=''>Selecione</option>";
+                                             if ($diasEHorariosDisponiveis) {
+                                                   foreach ($diasEHorariosDisponiveis as $data => $horarios) {
+                                                      if (!empty($horarios)){
+                                                         echo "<tr>";
+                                                         echo "<td><input type=\"radio\" name=\"data\" value=\"$data\"></td>";
+                                                         echo "<td>" . date('d/m', strtotime($data)) . "</td>";
+                                                         echo "<td><select class=\"hora\" name=\"hora[]\">";
+                                                         echo "<option selected value=''>Selecione</option>";
 
-                                                      // Loop através dos horários disponíveis para este dia
-                                                      foreach ($horarios as $horario) {
-                                                         echo "<option value='$horario' title='$horario'>$horario</option>";
+                                                         // Loop através dos horários disponíveis para este dia
+                                                         foreach ($horarios as $horario) {
+                                                            echo "<option value='$horario' title='$horario'>$horario</option>";
+                                                         }
+                                                         echo "</select></td>";
+                                                         echo "</tr>";
                                                       }
-                                                      echo "</select></td>";
-                                                      echo "</tr>";
                                                    }
-                                                }
-                                          } else {
-                                                // Se não houver dias e horários disponíveis, exibir uma mensagem
-                                                echo "<tr><td colspan=\"3\">Nenhum dia disponível</td></tr>";
-                                          }
+                                             } else {
+                                                   // Se não houver dias e horários disponíveis, exibir uma mensagem
+                                                   echo "<tr><td colspan=\"3\">Nenhum dia disponível</td></tr>";
+                                             }
                                           ?>
                                        </tbody>
                                        <input type="hidden" id="horaSelecionada" name="horaSelecionada" value="">
@@ -99,34 +99,36 @@
                                  <div class="modal-body">
                                     <table class="table">
                                        <thead>
-                                          <tr>
-                                             <th scope="col">Check-in</th>
-                                             <th scope="col">Diárias</th>
-                                             <th scope="col">Vagas</th>
+                                          <tr class="row">
+                                             <th scope="col" class="col-md-5">Check-in (12h)</th>
+                                             <th scope="col" class="col-md-4">Diárias</th>
+                                             <th scope="col" class="col-md-3">Vagas</th>
                                           </tr>
                                        </thead>
                                        <tbody id="tabelaAgendamentoHotel">
-                                       <?php
-                                          $diasVagasDisponiveis = buscarDiasHotel();
+                                          <?php
+                                             $diasVagasDisponiveis = buscarDiasHotel();
 
-                                          if ($diasVagasDisponiveis) {
-                                             echo '<tr>';
-                                             echo '<td><select class="dataHotel" name="data">';
-                                             echo '<option selected disabled>Selecione a data</option>';
-                                             
-                                             foreach ($diasVagasDisponiveis as $data => $numeroVagas) {
-                                                echo '<option value="' . $data . '" data-vagas="' . $numeroVagas . '">' . date('d/m', strtotime($data)) . '</option>';
+                                             if ($diasVagasDisponiveis) {
+                                                echo '<tr class="row">';
+                                                echo '<td class="col-md-5"><select class="dataHotel" name="data">';
+                                                echo '<option selected disabled>Selecione a data</option>';
+                                                
+                                                foreach ($diasVagasDisponiveis as $data => $numeroVagas) {
+                                                   echo '<option value="' . $data . '" data-vagas="' . $numeroVagas . '">' . date('d/m', strtotime($data)) . '</option>';
+                                                }
+                                                
+                                                echo '</select></td>';
+                                                echo '<td class="col-md-3"><input type="number" id="numDiarias" name="numDiarias" min="1" value="1" max="30" required></td>';
+                                                echo '<td class="col-md-3 d-flex justify-content-center align-items-center"><label id="labelVagas"></label></td>';
+                                                echo '</tr>';
+                                             } else {
+                                                echo '<tr><td colspan="2">Nenhum dia disponível</td></tr>';
                                              }
-                                             
-                                             echo '</select></td>';
-                                             echo '<td><input type="number" id="numDiarias" name="numDiarias" min="1" max="30" placeholder="Número de diárias"></td>';
-                                             echo '<td colspan="2" class="col-md-1"><label id="labelVagas"></label></td>';
-                                             echo '</tr>';
-                                          } else {
-                                             echo '<tr><td colspan="2">Nenhum dia disponível</td></tr>';
-                                          }
-                                       ?>
-                                       <tr class="row"><td>Temos uma equipe 24h com seu pet no Hotelzinho!</td></tr>
+                                          ?>
+                                          <tr class="row estiloFonteMenor" style="font-size: 24px;">
+                                             <td class="col-md-12 d-flex justify-content-center align-items-center">Temos uma equipe 24h com seu pet no Hotelzinho!</td>
+                                          </tr>
                                        </tbody>
                                     </table>
                                  </div>                           

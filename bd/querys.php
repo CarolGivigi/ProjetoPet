@@ -39,21 +39,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $idDonoInserido = $conexao->insert_id;
 
         // Inserção do agendamento
-        $sqlAgendamento = "INSERT INTO tbl_agendamento (id_dono, id_pet, id_servico, id_prof, hora_agendamento, data_agendamento, valor) 
-                            SELECT '$idDonoInserido', '$idPetInserido', '$servico', fk_prof, '$hora', '$data', '$valor' 
-                            FROM tbl_agenda_disponivel 
-                            WHERE data = '$data' AND hora = '$hora'";
-
-        $resultadoAgendamento = $conexao->query($sqlAgendamento);
-        if (!$resultadoAgendamento) {
-            throw new Exception("Erro ao inserir na tabela tbl_agendamento");
+        if ($servico !== '4'){ //se não for hotelzinho
+            $sqlAgendamento = "INSERT INTO tbl_agendamento (id_dono, id_pet, id_servico, id_prof, hora_agendamento, data_agendamento, valor) 
+                                SELECT '$idDonoInserido', '$idPetInserido', '$servico', fk_prof, '$hora', '$data', '$valor' 
+                                FROM tbl_agenda_disponivel 
+                                WHERE data = '$data' AND hora = '$hora'";
+            
+        }else {
+            $sqlAgendamento = "INSERT INTO tbl_agendamento (id_dono, id_pet, id_servico, hora_agendamento, data_agendamento, valor) 
+                                VALUES ('$idDonoInserido', '$idPetInserido', '$servico', '12:00:00', '$data', '$valor')";
+            $vagaPreenchida = "";
         }
 
-        // Remover o horário selecionado da tabela de disponibilidade
+        //testa se houve erro em algum agendamento(funciona para todos)
+        $resultadoAgendamento = $conexao->query($sqlAgendamento);
+        if (!$resultadoAgendamento) {
+            throw new Exception("Erro ao inserir na tabela de agendamento");
+        }
+
+        // Remover o horário selecionado da tabela de disponibilidade(só vai dar true quando n for hotelzinho, por causa da hora)
         $sqlRemoverHorario = "DELETE FROM tbl_agenda_disponivel WHERE data = '$data' AND hora = '$hora'";
         $resultadoRemoverHorario = $conexao->query($sqlRemoverHorario);
         if (!$resultadoRemoverHorario) {
             throw new Exception("Erro ao remover o horário da tabela tbl_agenda_disponivel");
+        }
+
+        //Diminuir vaga após agendamento do hotelzinho(variável de controle)
+        if (isset($vagaPreenchida)){
+            $sqlDiminuirVagas = "UPDATE tbl_agenda_disponivel_hotel SET vagas = vagas - 1  WHERE data = '$data'";
+            $conexao->query($sqlDiminuirVagas);
+
+            // Excluir linha quando o número de vagas chegar a 0
+            $sqlExcluirVagasZero = "DELETE FROM tbl_agenda_disponivel_hotel WHERE data = '$data' AND vagas = 0";
+            $conexao->query($sqlExcluirVagasZero);
         }
 
         // Commit da transação se todas as operações forem bem-sucedidas
