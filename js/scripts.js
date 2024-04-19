@@ -10,7 +10,6 @@ $(document).ready(function(){
         dataSelecionada = $('input[name="data"]:checked').val();
         horarioSelecionado = $(this).find('option:selected').prop('title'); 
     }
-    
     // Chamar a função quando o valor do select for alterado
     $('.hora').change(function() {
         pegaDataHora.call(this); 
@@ -51,8 +50,7 @@ $(document).ready(function(){
             $('#labelVagas').css('color', 'red'); 
         }
     });
-    
-    
+      
     //Botão 'salvar' modal
     $('.salvaModal').click(function() {
         $('.modal').modal('hide');

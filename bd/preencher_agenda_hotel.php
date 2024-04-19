@@ -11,7 +11,7 @@ $dias_preenchidos = 0;
 // Loop para preencher a agenda para os próximos 15 dias
 while ($dias_preenchidos < 15) {
     // Inserir a data na tabela do hotel
-    $sql = "INSERT INTO tbl_agenda_disponivel_hotel (data) VALUES ('$data_atual')";
+    $sql = "INSERT INTO tbl_agenda_disponivel_hotel (data, vagas) VALUES ('$data_atual','5')";
     $conexao->query($sql);
     // Incrementar o contador de dias preenchidos
     $dias_preenchidos++;
