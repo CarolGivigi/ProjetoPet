@@ -144,4 +144,5 @@ $(document).ready(function(){
     $('.voltar').click(function() {
         window.location.href = "index.php";
     });
+
 }); 

@@ -1,0 +1,32 @@
+body, html {
+    background: linear-gradient(to bottom, #94e3c9, #f8f8f7);
+  
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Ajusta o alinhamento vertical */
+    height: 100%;
+}
+
+.content {
+    text-align: center; /* Centraliza o texto horizontalmente */
+}
+
+.estiloFonte{
+    font-family: "Caveat", cursive;
+    font-optical-sizing: auto;
+    font-size: 45px;
+    color: rgb(255, 255, 255);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #474646; 
+}
+
+.estiloFonteMenor, #toggleServicos {
+    font-size: 20px;
+    color: #0c856d;
+    -webkit-text-stroke-color: #788889; 
+}

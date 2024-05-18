@@ -1,12 +1,11 @@
 <?php
 require_once 'ConexaoBD.php';
-//require_once 'enviaEmail.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = $_POST['data'];
     $hora = $_POST['horaSelecionada']; //campo hidden com a hora escolhida
     $nomeDono = $_POST['nomeDono'];
-    $email = $_POST['email'];
+    $telefone = $_POST['telefone'];
     $nomePet = $_POST['nomePet'];
     $portePet = $_POST['portePet'];
     $servico = $_POST['servicos'];
@@ -29,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $idPetInserido = $conexao->insert_id;
 
         // INSERIR NA TBL_DONO
-        $sqlDono = "INSERT INTO tbl_dono (nome, email, id_pet) VALUES ('$nomeDono', '$email', '$idPetInserido')";
+        $sqlDono = "INSERT INTO tbl_dono (nome, telefone, id_pet) VALUES ('$nomeDono', '$telefone', '$idPetInserido')";
         $resultadoDono = $conexao->query($sqlDono);
         if (!$resultadoDono) {
             throw new Exception("Erro ao inserir na tabela tbl_dono");
@@ -80,14 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Verificar se a consulta foi bem-sucedida
         json_encode(array("success" => true));
 
-        // Parâmetros para o e-mail
-        // $assunto = "Confirmação de Agendamento";
-        // $mensagem = "Funcionou ein";
-        // $mensagem = "Olá $nomeDono,<br><br>O seu agendamento foi confirmado com sucesso para o dia $data às $hora.<br><br>Atenciosamente,<br> Pet Shop da Carol.";
-
-        // Enviar e-mail
-        //enviarEmail($email, $assunto, $mensagem); 
-
         echo '<script>window.location.href = "../confirmacao.php";</script>';
         exit;
     } catch (Exception $e) {
@@ -97,6 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     // Fechar a conexão com o banco de dados
     $conexaoBD->fecharConexao();
+
 }
 
 // Função para buscar os dias disponíveis na modal
@@ -153,6 +145,5 @@ function buscarDiasHotel() {
         return false;
     }
 }
-
 
 ?>

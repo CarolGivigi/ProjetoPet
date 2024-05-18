@@ -8,7 +8,7 @@
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>PetShop </title> <!-- mudar dps -->
+      <title>PetShop da Nina</title>
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,8 +18,11 @@
    </head>
    <body>
    <div class="container-fluid">
-      <div class="row d-flex justify-content-center align-items-center" style="height:750px;">
-         <div class="col-md-5 rounded " style="height:540px; background-color:#0CA789;">
+      <div class="row mt-3 d-flex justify-content-center align-items-center text-center">
+         <div class="col-sm"><img src="./images/logo.png" style="width: 280px; height: auto;"> </div>
+      </div>
+      <div class="row d-flex justify-content-center align-items-center" style="height:730px;">
+         <div class="col-md-5 rounded " style="height:550px; background-color:#0CA789;">
             <form method="POST" action="./bd/querys.php" id="formAgendamento">
                <fieldset class="border rounded-3 p-3 ">
                   <legend class="float-none w-auto px-3 text-center estiloFonte">Seja Bem-Vindo!</legend>
@@ -144,8 +147,8 @@
                         <div class="col-md-6"><input type="text" class="form-control" name="nomeDono" pattern="[A-Za-z]+" id="nomeDono" size="15" required></div>
                      </div>
                      <div class="row mt-2">
-                        <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="email" class="form-label estiloFonte">E-mail</label></div>
-                        <div class="col-md-6"><input type="email" class="form-control" name="email" id="email" size="35" required></div>
+                        <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="telefone" class="form-label estiloFonte">Telefone</label></div>
+                        <div class="col-md-6"><input type="tel" class="form-control" name="telefone" id="telefone" maxlength="9" required></div>
                      </div>
                      <div class="row mt-2">
                         <div class="col-md-6 d-flex justify-content-end align-items-center"><label for="nomePet" class="form-label estiloFonte">Nome do Pet</label></div>

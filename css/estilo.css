@@ -11,13 +11,6 @@ body {
   justify-content: center;
 }
 
-/* Estilo adicional para o conteúdo no corpo
-.content {
-  text-align: center;
-  font-size: 24px;
-} */
-
-
 .estiloFonte{
   font-family: "Caveat", cursive;
   font-optical-sizing: auto;
