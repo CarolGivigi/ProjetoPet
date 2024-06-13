@@ -1,6 +1,7 @@
 body, html {
     background: linear-gradient(to bottom, #94e3c9, #f8f8f7);
-  
+    background-attachment: fixed;
+    
     height: 100%;
     margin: 0;
 }
@@ -25,7 +26,7 @@ body, html {
     -webkit-text-stroke-color: #474646; 
 }
 
-.estiloFonteMenor, #toggleServicos {
+.estiloFonteMenor, #toggleServicos, #toggleFunc {
     font-size: 20px;
     color: #0c856d;
     -webkit-text-stroke-color: #788889; 

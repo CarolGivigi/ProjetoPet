@@ -1,7 +1,8 @@
 body {
   /* Sintaxe do gradiente linear para o background do corpo (body) */
   background: linear-gradient(to bottom, #94e3c9, #f8f8f7);
-
+  background-attachment: fixed;
+  
   /* Estilo adicional para o corpo */
   margin: 0;
   padding: 0;
