@@ -20,18 +20,18 @@ $servicos = obterServicos();
                 <table id="tabelaFunc" class="table table-striped" style="display: none;">
                     <thead>
                         <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Ação</th>
+                        <th scope="col" class="col-md-4">Nome</th>
+                        <th scope="col" class="col-md-3">Ação</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!empty($funcionarios)) : ?>
                             <?php foreach ($funcionarios as $funcionario) : ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($funcionario['nome']); ?></td>
+                                    <td class="nomeFunc" data-id="<?php echo $funcionario['id']; ?>"><?php echo htmlspecialchars($funcionario['nome']); ?></td>
                                     <td>
                                         <span class="glyphicon glyphicon-trash" title="Remover" style="margin-right: 5px; cursor: pointer; color: red;" data-id="<?php echo $funcionario['id']; ?>"></span>
-                                        <span class="glyphicon glyphicon-pencil" title="Editar" style="margin-right: 5px; cursor: pointer;" data-id="<?php echo $funcionario['id']; ?>"></span>
+                                        <span class="glyphicon glyphicon-pencil editarFunc" title="Editar" style="margin-right: 5px; cursor: pointer;" data-id="<?php echo $funcionario['id']; ?>"></span>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -46,10 +46,10 @@ $servicos = obterServicos();
                 </table>
                 <table id="tabelaAdc" class="table" style="display: none";>
                     <tr>
-                        <td>
+                        <td class="col-md-4">
                             <input type="text" id="novoFuncionario" placeholder="Novo Funcionário" disabled>
                         </td>
-                        <td>
+                        <td class="col-md-3">
                             <span id="adcFuncionario" title="Adicionar Funcionário" class="glyphicon glyphicon-plus" style="margin-right: 5px; cursor: pointer; color: mediumseagreen;"></span>
                             <span id="cancelarAdicao" title="Cancelar" class="glyphicon glyphicon-remove-sign" style="margin-right: 5px; cursor: pointer; color: tomato; display: none;"></span>
                         </td>
@@ -67,18 +67,18 @@ $servicos = obterServicos();
                 <table id="tabelaServ" class="table table-striped" style="display: none;">
                     <thead>
                         <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Ação</th>
+                            <th scope="col" class="col-md-4">Nome</th>
+                            <th scope="col" class="col-md-3">Ação</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if (!empty($servicos)) : ?>
                             <?php foreach ($servicos as $servico) : ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($servico['nome']); ?></td>
+                                    <td class="nomeServ" data-id="<?php echo $servico['id']; ?>"><?php echo htmlspecialchars($servico['nome']); ?></td>
                                     <td>
                                         <span class="glyphicon glyphicon-minus" title="Remover" style="margin-right: 5px; cursor: pointer; color: red;" data-id="<?php echo $servico['id']; ?>"></span>
-                                        <span class="glyphicon glyphicon-pencil" title="Editar" style="margin-right: 5px; cursor: pointer;" data-id="<?php echo $servico['id']; ?>"></span>
+                                        <span class="glyphicon glyphicon-pencil editarServ" title="Editar" style="margin-right: 5px; cursor: pointer;" data-id="<?php echo $servico['id']; ?>"></span>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -93,10 +93,10 @@ $servicos = obterServicos();
                 </table>
                 <table id="tabelaAdcServ" class="table" style="display: none";>
                     <tr>
-                        <td>
+                        <td class="col-md-4">
                             <input type="text" id="novoServico" placeholder="Novo Serviço" disabled>
                         </td>
-                        <td>
+                        <td class="col-md-3">
                             <span id="adcServico" title="Adicionar Serviço" class="glyphicon glyphicon-plus" style="margin-right: 5px; cursor: pointer; color: mediumseagreen;"></span>
                             <span id="cancelarAdicaoServ" title="Cancelar" class="glyphicon glyphicon-remove-sign" style="margin-right: 5px; cursor: pointer; color: tomato; display: none;"></span>
                         </td>

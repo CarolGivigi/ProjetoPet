@@ -48,16 +48,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     echo json_encode(array("success" => false, "message" => "ID do funcionário não fornecido."));
                 }
-            break;
+                break;
             case 'editarFunc':
-                // if (isset($_POST['idFunc']) && isset($_POST['novoNome'])) {
-                //     $idFunc = $_POST['idFunc'];
-                //     $novoNome = $_POST['novoNome'];
-                //     $resultado = editarFunc($idFunc, $novoNome);
-                //     echo json_encode(array("success" => $resultado));
-                // } else {
-                //     echo json_encode(array("success" => false, "message" => "Dados do funcionário não fornecidos."));
-                // }
+                if (isset($_POST['idFunc'])) {
+                    $idFunc = intval($_POST['idFunc']);
+                    $nome = $_POST['nome'];
+                    $resultado = editarFunc($idFunc, $nome);
+                    echo json_encode($resultado);
+                } else {
+                    echo json_encode(array("success" => false, "message" => "ID do funcionário não fornecido."));
+                }
             break;
             case 'adicionarFunc':
                 if (isset($_POST['nome'])) {
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     echo json_encode(array("success" => false, "message" => "Nome do funcionário não fornecido."));
                 }
-            break;
+                break;
             case 'excluirServ':
                 if (isset($_POST['idServ'])) {
                     $idServ = $_POST['idServ'];
@@ -76,16 +76,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     echo json_encode(array("success" => false, "message" => "ID do serviço não fornecido."));
                 }
-                break;
+            break;
             case 'editarServ':
-                // if (isset($_POST['idServ']) && isset($_POST['novoNome'])) {
-                //     $idFunc = $_POST['idFunc'];
-                //     $novoNome = $_POST['novoNome'];
-                //     $resultado = editarFunc($idFunc, $novoNome);
-                //     echo json_encode(array("success" => $resultado));
-                // } else {
-                //     echo json_encode(array("success" => false, "message" => "Dados do funcionário não fornecidos."));
-                // }
+                if (isset($_POST['idServ'])) {
+                    $idServ = intval($_POST['idServ']);
+                    $nome = $_POST['nome'];
+                    $resultado = editarServ($idServ, $nome);
+                    echo json_encode($resultado);
+                } else {
+                    echo json_encode(array("success" => false, "message" => "ID do serviço não fornecido."));
+                }
             break;
             case 'adicionarServ':
                 if (isset($_POST['nome'])) {
@@ -95,7 +95,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 } else {
                     echo json_encode(array("success" => false, "message" => "Nome do serviço não fornecido."));
                 }
-            break;
+                break;
+            default:
+                echo json_encode(array("success" => false, "message" => "Ação não especificada."));
+                break;
         }
     } else {
         echo json_encode(array("success" => false, "message" => "Ação não especificada."));
@@ -118,20 +121,22 @@ function excluirFunc($idFunc) {
     }
 }
 
-// function editarFunc($idFunc, $novoNome) {
-//     $conexaoBD = new ConexaoBD();
-//     $conexao = $conexaoBD->conexao;
-//     $idFunc = $conexao->real_escape_string($idFunc);
-//     $novoNome = $conexao->real_escape_string($novoNome);
-//     $sql = "UPDATE tbl_profissional SET nome = '$novoNome' WHERE id = '$idFunc'";
-//     if ($conexao->query($sql) === TRUE) {
-//         $conexaoBD->fecharConexao();
-//         return true;
-//     } else {
-//         $conexaoBD->fecharConexao();
-//         return false;
-//     }
-// }
+function editarFunc($id, $nome) {
+    $conexaoBD = new ConexaoBD();
+    $conexao = $conexaoBD->conexao;
+
+    $nome = $conexao->real_escape_string($nome);
+    $id = intval($id);
+    $sql = "UPDATE tbl_profissional SET nome = '$nome' WHERE id = $id";
+
+    if ($conexao->query($sql) === TRUE) {
+        $conexaoBD->fecharConexao();
+        return array("success" => true);
+    } else {
+        $conexaoBD->fecharConexao();
+        return array("success" => false, "message" => "Erro ao atualizar o nome do funcionário.");
+    }
+}
 
 function adicionarFunc($nome) {
     $conexaoBD = new ConexaoBD();
@@ -150,7 +155,6 @@ function adicionarFunc($nome) {
     }
 }
 
-
 function excluirServ($idServ) {
     $conexaoBD = new ConexaoBD();
     $conexao = $conexaoBD->conexao;
@@ -167,20 +171,22 @@ function excluirServ($idServ) {
     }
 }
 
-// function editarServ($idFunc, $novoNome) {
-//     $conexaoBD = new ConexaoBD();
-//     $conexao = $conexaoBD->conexao;
-//     $idFunc = $conexao->real_escape_string($idFunc);
-//     $novoNome = $conexao->real_escape_string($novoNome);
-//     $sql = "UPDATE tbl_profissional SET nome = '$novoNome' WHERE id = '$idFunc'";
-//     if ($conexao->query($sql) === TRUE) {
-//         $conexaoBD->fecharConexao();
-//         return true;
-//     } else {
-//         $conexaoBD->fecharConexao();
-//         return false;
-//     }
-// }
+function editarServ($id, $nome) {
+    $conexaoBD = new ConexaoBD();
+    $conexao = $conexaoBD->conexao;
+
+    $nome = $conexao->real_escape_string($nome);
+    $id = intval($id); // Corrigido para usar $id em vez de $idFunc
+    $sql = "UPDATE tbl_servico SET nome = '$nome' WHERE id = $id";
+
+    if ($conexao->query($sql) === TRUE) {
+        $conexaoBD->fecharConexao();
+        return array("success" => true);
+    } else {
+        $conexaoBD->fecharConexao();
+        return array("success" => false, "message" => "Erro ao atualizar o nome do serviço.");
+    }
+}
 
 function adicionarServ($nome) {
     $conexaoBD = new ConexaoBD();

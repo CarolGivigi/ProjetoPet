@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Alternar a exibição da tabela de funcionários
+    //Exibir/ocultar funcionários
     document.getElementById('toggleFunc').addEventListener('click', function() {
         var tabelaFunc = document.getElementById('tabelaFunc');
         var toggleFunc = document.getElementById('toggleFunc');
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
+    //Exibir/ocultar serviços
     document.getElementById('toggleServ').addEventListener('click', function() {
         var tabelaServ = document.getElementById('tabelaServ');
         var toggleServ = document.getElementById('toggleServ');
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Event listener para remover funcionário (funcionários existentes)
+    // remover funcionário
     document.querySelectorAll('.glyphicon-trash').forEach(function(element) {
         element.addEventListener('click', function() {
             var idFunc = this.getAttribute('data-id');
@@ -152,13 +152,65 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event listener para editar funcionário (ainda não implementada)
-    // document.querySelectorAll('.glyphicon-pencil').forEach(function(element) {
-    //     element.addEventListener('click', function() {
-    //         alert('Função de edição não implementada.');
-    //     });
-    // });
+    //editar funcionario
+    document.querySelectorAll('.editarFunc').forEach(function(editIcon) {
+        editIcon.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var nomeTd = this.closest('tr').querySelector('.nomeFunc');
+            var nomeAtual = nomeTd ? nomeTd.innerText : '';
 
+            if (nomeTd) {
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.value = nomeAtual;
+                var oldValue = nomeTd.innerHTML; // Salva o valor original para restauração em caso de erro
+
+                // Substitui o conteúdo da célula pelo input
+                nomeTd.innerHTML = '';
+                nomeTd.appendChild(input);
+                input.focus();
+
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        var novoNome = input.value.trim();
+                        if (novoNome !== '') {
+                            $.ajax({
+                                url: 'bd/querysGer.php',
+                                type: 'POST',
+                                data: {
+                                    idFunc: id,
+                                    nome: novoNome,
+                                    acao: 'editarFunc'
+                                },
+                                success: function(response) {
+                                    var result = JSON.parse(response);
+                                    if (result.success) {
+                                        // Atualiza o texto na célula
+                                        nomeTd.textContent = novoNome;
+                                        // Remove o input após a atualização bem-sucedida
+                                        input.remove();
+                                    } else {
+                                        alert("Erro ao editar funcionário: " + result.message);
+                                        // Restaura o valor original em caso de erro
+                                        nomeTd.innerHTML = oldValue;
+                                    }
+                                },
+                                error: function() {
+                                    alert("Erro ao processar a solicitação.");
+                                    // Restaura o valor original em caso de erro de requisição
+                                    nomeTd.innerHTML = oldValue;
+                                }
+                            });
+                        } else {
+                            alert("Nome do funcionário não pode ser vazio.");
+                            // Restaura o valor original se o nome for vazio
+                            nomeTd.innerHTML = oldValue;
+                        }
+                    }
+                });
+            }
+        });
+    });
 
     //Funções de Servico
     var adcServico = document.getElementById('adcServico');
@@ -279,11 +331,62 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Event listener para editar serviço (ainda não implementada) FAZER
-    // document.querySelectorAll('.glyphicon-pencil').forEach(function(element) {
-    //     element.addEventListener('click', function() {
-    //         alert('Função de edição não implementada.');
-    //     });
-    // });
-
+    //editar servico
+    document.querySelectorAll('.editarServ').forEach(function(editIcon) {
+        editIcon.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var nomeTd = this.closest('tr').querySelector('.nomeServ');
+            var nomeAtual = nomeTd ? nomeTd.innerText : '';
+    
+            if (nomeTd) {
+                var input = document.createElement('input');
+                input.type = 'text';
+                input.value = nomeAtual;
+                var oldValue = nomeTd.innerHTML; 
+    
+                // Substitui o conteúdo da célula pelo input
+                nomeTd.innerHTML = '';
+                nomeTd.appendChild(input);
+                input.focus();
+    
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        var novoNome = input.value.trim();
+                        if (novoNome !== '') {
+                            $.ajax({
+                                url: 'bd/querysGer.php',
+                                type: 'POST',
+                                data: {
+                                    idServ: id, // Corrigido de idFunc para idServ
+                                    nome: novoNome,
+                                    acao: 'editarServ'
+                                },
+                                success: function(response) {
+                                    var result = JSON.parse(response);
+                                    if (result.success) {
+                                        nomeTd.textContent = novoNome;
+                                        input.remove();
+                                    } else {
+                                        alert("Erro ao editar serviço: " + result.message);
+                                        // Restaura o valor original em caso de erro
+                                        nomeTd.innerHTML = oldValue;
+                                    }
+                                },
+                                error: function() {
+                                    alert("Erro ao processar a solicitação.");
+                                    nomeTd.innerHTML = oldValue;
+                                }
+                            });
+                        } else {
+                            alert("Nome do serviço não pode ser vazio.");
+                            // Restaura o valor original se o nome for vazio
+                            nomeTd.innerHTML = oldValue;
+                        }
+                    }
+                });
+            }
+        });
+    });
+    
+    
 });
